@@ -14,6 +14,10 @@ void main() {
           'oxz9OVJdNgodAcgWL7QG5BXkqh4=',
           '70258');
       expect(responseStatus, 'OK');
+    }, tags: <String>['noCI']);
+
+    test('ciOk', () {
+      expect(true, true);
     });
-  }, tags: <String>['noCI']);
+  });
 }
