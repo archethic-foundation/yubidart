@@ -57,6 +57,7 @@ class YubicoService {
         final Uri uri = Uri.parse(Uri.encodeFull(
             'https://api.yubico.com/wsapi/2.0/verify?' +
                 responseHttp.body.replaceAll('\n', '&').replaceAll('\r', '')));
+        // ignore: prefer_final_locals
         List<String> responseParams = List<String>.empty(growable: true);
         uri.queryParameters.forEach((String k, String v) {
           if (k == 'status') {
