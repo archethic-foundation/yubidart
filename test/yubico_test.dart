@@ -10,9 +10,9 @@ void main() {
   group('yubicoService', () {
     test('verifySignatures', () async {
       final String responseStatus = await YubicoService().verifyYubiCloudOTP(
-          'vvcccbcgdulihvuckbitgibhcdvtblnkrvrkbhidifjn',
-          'oxz9OVJdNgodAcgWL7QG5BXkqh4=',
-          '70258');
+          'vvbbbbcggtlihvuckbitgibhcdvtblnkrvrkbhidifjn',
+          'mG5be6ZJU1qBGz24yPh/ESM3UdU=',
+          '1');
       expect(responseStatus, 'OK');
     }, tags: <String>['noCI']);
 
