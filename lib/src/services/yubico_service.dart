@@ -7,7 +7,10 @@ import 'dart:typed_data';
 // Package imports:
 import 'package:crypto/crypto.dart' as crypto show Hmac, sha1, Digest;
 import 'package:http/http.dart' as http show Response, get;
+import 'package:nfc_manager/nfc_manager.dart';
 import 'package:nonce/nonce.dart';
+import 'package:yubidart/src/nfc/record.dart';
+import 'package:yubidart/src/nfc/wellknown_uri_record.dart';
 
 class YubicoService {
   /// Verify OTP with YubiCloud
@@ -106,5 +109,22 @@ class YubicoService {
       responseStatus = 'RESPONSE_KO';
     }
     return responseStatus;
+  }
+
+  String getOTPFromYubiKeyNFC(NfcTag tag) {
+    final Ndef? tech = Ndef.from(tag);
+    final NdefMessage? cachedMessage = tech!.cachedMessage;
+    String otp = '';
+    if (cachedMessage != null) {
+      for (int i in Iterable.generate(cachedMessage.records.length)) {
+        final NdefRecord record = cachedMessage.records[i];
+        final Record _record = Record.fromNdef(record);
+        if (_record is WellknownUriRecord) {
+          otp = '${_record.uri}';
+          otp = otp.split('#')[1];
+        }
+      }
+    }
+    return otp;
   }
 }

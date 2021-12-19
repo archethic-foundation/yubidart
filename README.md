@@ -8,7 +8,7 @@ Yubico dart library for Dart/Flutter
 
 First Use Case:
 
-OTP Validation with Yubikey and YubiCloud
+Get OTP from NFC Yubikey and OTP Validation with YubiCloud
 https://developers.yubico.com/OTP/Specifications/OTP_validation_protocol.html
 
 ## Running the tests

@@ -2,7 +2,7 @@ name: yubidart
 description: Yubico Services for Dart and Flutter. OTP Validation with Yubikey
 homepage: https://github.com/reddwarf03/yubidart
 
-version: 1.0.1
+version: 1.0.2
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
@@ -14,6 +14,9 @@ dependencies:
 
   # A composable, multi-platform, Future-based API for HTTP requests
   http: ^0.13.4
+
+  # Flutter plugin for accessing the NFC features on Android and iOS.
+  nfc_manager: ^3.1.0
 
   # Nonce contains a static generator that generates random alphanumeric strings, and can be constructed as an object containing a generated string
   nonce: ^1.2.0
