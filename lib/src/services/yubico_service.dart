@@ -138,7 +138,7 @@ class YubicoService {
   /// @param {String} [timestamp] (optional) Timestamp=1 requests timestamp and session counter information in the response
   Future<String> verifyOTPFromYubiKeyNFC(NfcTag tag, String apiKey, String id,
       {int? timeout, String? sl, String? timestamp}) async {
-    String otp = getOTPFromYubiKeyNFC(tag);
+    final String otp = getOTPFromYubiKeyNFC(tag);
     if (otp.isEmpty) {
       return 'OTP_NOT_FOUND';
     } else {
