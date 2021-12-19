@@ -45,7 +45,6 @@ class YubicoService {
       /// The optional HMAC-SHA1 signature for the request.
       final String hEncode64 = base64.encode(sha1Result.bytes);
 
-      print(keyValue);
       final http.Response responseHttp = await http.get(
         Uri.parse('https://api.yubico.com/wsapi/2.0/verify?' +
             keyValue +
@@ -111,6 +110,8 @@ class YubicoService {
     return responseStatus;
   }
 
+  /// Get OTP from NFC YubiKey
+  /// @param {NfcTag} [tag] Tag discovered by the session
   String getOTPFromYubiKeyNFC(NfcTag tag) {
     final Ndef? tech = Ndef.from(tag);
     final NdefMessage? cachedMessage = tech!.cachedMessage;
@@ -126,5 +127,23 @@ class YubicoService {
       }
     }
     return otp;
+  }
+
+  /// Verify from NFC Yubikey the OTP
+  /// @param {NfcTag} [tag] Tag discovered by the session
+  /// @param {String} [apiKey]
+  /// @param {String} [id] Specifies the requestor so that the end-point can retrieve correct shared secret for signing the response.
+  /// @param {int} [timeout] (optional) Number of seconds to wait for sync responses; if absent, let the server decide
+  /// @param {String} [sl] (optional) A value 0 to 100 indicating percentage of syncing required by client, or strings "fast" or "secure" to use server-configured values; if absent, let the server decide
+  /// @param {String} [timestamp] (optional) Timestamp=1 requests timestamp and session counter information in the response
+  Future<String> verifyOTPFromYubiKeyNFC(NfcTag tag, String apiKey, String id,
+      {int? timeout, String? sl, String? timestamp}) async {
+    String otp = getOTPFromYubiKeyNFC(tag);
+    if (otp.isEmpty) {
+      return 'OTP_NOT_FOUND';
+    } else {
+      return await verifyYubiCloudOTP(otp, apiKey, id,
+          timeout: timeout, sl: sl, timestamp: timestamp);
+    }
   }
 }

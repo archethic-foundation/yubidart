@@ -8,4 +8,5 @@ Changelog
 * Change description
 
 #### Version 1.0.2 (2021-12-19)
-* get OTP from NFC Yubikey
+* get OTP from NFC Yubikey (getOTPFromYubiKeyNFC method)
+* get OTP from NFC Yubikey and verify with yubiCloud (verifyOTPFromYubiKeyNFC method)
