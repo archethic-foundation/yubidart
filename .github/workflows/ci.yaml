@@ -18,10 +18,7 @@ jobs:
           sdk: stable
 
       - name: Install dependencies
-        run: dart pub get
-
-      - name: Analyze source code
-        run: dart analyze
+        run: flutter pub get
 
       - name: Tests
-        run: dart test --exclude-tags noCI
+        run: flutter test --exclude-tags noCI
