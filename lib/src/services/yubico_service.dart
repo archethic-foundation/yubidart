@@ -142,8 +142,13 @@ class YubicoService {
     if (otp.isEmpty) {
       return 'OTP_NOT_FOUND';
     } else {
-      return await verifyYubiCloudOTP(otp, apiKey, id,
+      final String responseStatus = await verifyYubiCloudOTP(otp, apiKey, id,
           timeout: timeout, sl: sl, timestamp: timestamp);
+      if (responseStatus == 'OK') {
+        return otp;
+      } else {
+        return responseStatus;
+      }
     }
   }
 }
