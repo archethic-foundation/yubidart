@@ -1,4 +1,5 @@
 import 'package:nfc_manager/nfc_manager.dart';
+import 'package:yubidart/src/model/verification_response.dart';
 import 'package:yubidart/yubidart.dart' show YubicoService;
 
 Future<void> main(List<String> args) async {
@@ -9,13 +10,13 @@ Future<void> main(List<String> args) async {
       final String otp = YubicoService().getOTPFromYubiKeyNFC(tag);
 
       /// Verify OTP with YubiCloud
-      final String responseStatus = await YubicoService()
+      final VerificationResponse verificationResponse = await YubicoService()
           .verifyYubiCloudOTP(otp, 'mG5be6ZJU1qBGz24yPh/ESM3UdU=', '1');
       NfcManager.instance.stopSession();
-      if (responseStatus == 'OK') {
+      if (verificationResponse.status == 'OK') {
         print('OTP valid');
       } else {
-        print('Error : ' + responseStatus);
+        print('Error : ' + verificationResponse.status);
       }
     });
   }

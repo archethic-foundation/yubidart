@@ -9,20 +9,26 @@ import 'package:crypto/crypto.dart' as crypto show Hmac, sha1, Digest;
 import 'package:http/http.dart' as http show Response, get;
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:nonce/nonce.dart';
+
+// Project imports:
+import 'package:yubidart/src/model/verification_response.dart';
 import 'package:yubidart/src/nfc/record.dart';
 import 'package:yubidart/src/nfc/wellknown_uri_record.dart';
 
 class YubicoService {
   /// Verify OTP with YubiCloud
+  /// https://developers.yubico.com/OTP/Specifications/OTP_validation_protocol.html
   /// @param {String} [otp] The OTP from the YubiKey.
   /// @param {String} [apiKey]
   /// @param {String} [id] Specifies the requestor so that the end-point can retrieve correct shared secret for signing the response.
   /// @param {int} [timeout] (optional) Number of seconds to wait for sync responses; if absent, let the server decide
   /// @param {String} [sl] (optional) A value 0 to 100 indicating percentage of syncing required by client, or strings "fast" or "secure" to use server-configured values; if absent, let the server decide
   /// @param {String} [timestamp] (optional) Timestamp=1 requests timestamp and session counter information in the response
-  Future<String> verifyYubiCloudOTP(String otp, String apiKey, String id,
+  Future<VerificationResponse> verifyYubiCloudOTP(
+      String otp, String apiKey, String id,
       {int? timeout, String? sl, String? timestamp}) async {
-    String responseStatus = 'KO';
+    // ignore: prefer_final_locals
+    VerificationResponse verificationResponse = VerificationResponse();
     try {
       final Uint8List apiKeyDecode64 = base64.decode(apiKey);
 
@@ -63,16 +69,34 @@ class YubicoService {
         List<String> responseParams = List<String>.empty(growable: true);
         uri.queryParameters.forEach((String k, String v) {
           if (k == 'status') {
-            responseStatus = v.trim();
+            verificationResponse.status = v.trim();
           }
           if (k == 'nonce' && v.trim() == nonce) {
             nonceOk = true;
+            verificationResponse.nonce = v.trim();
           }
           if (k == 'otp' && v.trim() == otp) {
             otpOk = true;
+            verificationResponse.otp = v.trim();
           }
           if (k == 'h') {
             h = v.trim();
+            verificationResponse.h = v.trim();
+          }
+          if (k == 't') {
+            verificationResponse.t = v.trim();
+          }
+          if (k == 'timestamp') {
+            verificationResponse.timestamp = v.trim();
+          }
+          if (k == 'sessioncounter') {
+            verificationResponse.sessionCounter = v.trim();
+          }
+          if (k == 'sessionuse') {
+            verificationResponse.sessionuse = v.trim();
+          }
+          if (k == 'sl') {
+            verificationResponse.sl = int.tryParse(v.trim());
           }
           responseParams.add(k + '=' + v);
         });
@@ -91,7 +115,7 @@ class YubicoService {
           }
         }
 
-        if (responseStatus == 'OK') {
+        if (verificationResponse.status == 'OK') {
           final crypto.Digest responseSha1Result =
               hmacSha1.convert(keyValue.codeUnits);
           final String responseHEncode64 =
@@ -100,14 +124,15 @@ class YubicoService {
             hOk = true;
           }
           if (!nonceOk || !otpOk || !hOk) {
-            responseStatus = 'RESPONSE_KO';
+            verificationResponse.status = 'RESPONSE_KO';
           }
         }
       }
     } catch (e) {
-      responseStatus = 'RESPONSE_KO';
+      print(e);
+      verificationResponse.status = 'RESPONSE_KO';
     }
-    return responseStatus;
+    return verificationResponse;
   }
 
   /// Get OTP from NFC YubiKey
@@ -136,19 +161,17 @@ class YubicoService {
   /// @param {int} [timeout] (optional) Number of seconds to wait for sync responses; if absent, let the server decide
   /// @param {String} [sl] (optional) A value 0 to 100 indicating percentage of syncing required by client, or strings "fast" or "secure" to use server-configured values; if absent, let the server decide
   /// @param {String} [timestamp] (optional) Timestamp=1 requests timestamp and session counter information in the response
-  Future<String> verifyOTPFromYubiKeyNFC(NfcTag tag, String apiKey, String id,
+  Future<VerificationResponse> verifyOTPFromYubiKeyNFC(
+      NfcTag tag, String apiKey, String id,
       {int? timeout, String? sl, String? timestamp}) async {
+    VerificationResponse verificationResponse = VerificationResponse();
     final String otp = getOTPFromYubiKeyNFC(tag);
-    if (otp.isEmpty) {
-      return 'OTP_NOT_FOUND';
-    } else {
-      final String responseStatus = await verifyYubiCloudOTP(otp, apiKey, id,
+    if (otp.isNotEmpty) {
+      verificationResponse = await verifyYubiCloudOTP(otp, apiKey, id,
           timeout: timeout, sl: sl, timestamp: timestamp);
-      if (responseStatus == 'OK') {
-        return otp;
-      } else {
-        return responseStatus;
-      }
+    } else {
+      verificationResponse.status = 'OTP_NOT_FOUND';
     }
+    return verificationResponse;
   }
 }
