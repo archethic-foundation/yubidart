@@ -2,7 +2,7 @@ name: yubidart
 description: Yubico Services for Dart and Flutter. OTP Validation with Yubikey
 homepage: https://github.com/reddwarf03/yubidart
 
-version: 1.0.2
+version: 1.0.3
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
