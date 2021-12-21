@@ -139,12 +139,11 @@ class YubicoService {
   Future<String> verifyOTPFromYubiKeyNFC(NfcTag tag, String apiKey, String id,
       {int? timeout, String? sl, String? timestamp}) async {
     final String otp = getOTPFromYubiKeyNFC(tag);
-    /*if (otp.isEmpty) {
+    if (otp.isEmpty) {
       return 'OTP_NOT_FOUND';
     } else {
       return await verifyYubiCloudOTP(otp, apiKey, id,
           timeout: timeout, sl: sl, timestamp: timestamp);
-    }*/
-    return otp;
+    }
   }
 }
