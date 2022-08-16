@@ -2,9 +2,9 @@ library test.yubico_test;
 
 // Package imports:
 import 'package:test/test.dart';
-import 'package:yubidart/src/model/verification_response.dart';
 
 // Project imports:
+import 'package:yubidart/src/model/verification_response.dart';
 import 'package:yubidart/src/services/yubico_service.dart';
 
 void main() {
