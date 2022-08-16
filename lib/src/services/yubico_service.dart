@@ -77,7 +77,7 @@ class YubicoService {
             verificationResponse.otp = v.trim();
           }
           if (k == 'h') {
-            h = v.trim();
+            h = v.trim().replaceAll(' ', '+');
             verificationResponse.h = v.trim();
           }
           if (k == 't') {
