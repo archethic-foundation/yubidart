@@ -16,7 +16,7 @@ Future<void> main(List<String> args) async {
       if (verificationResponse.status == 'OK') {
         print('OTP valid');
       } else {
-        print('Error : ' + verificationResponse.status);
+        print('Error : ${verificationResponse.status}');
       }
     });
   }

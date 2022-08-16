@@ -35,15 +35,15 @@ class YubicoService {
       /// A 16 to 40 character long string with random unique data
       final String nonce = Nonce.generate(Random().nextInt(25) + 16);
 
-      String keyValue = 'id=' + id + '&nonce=' + nonce + '&otp=' + otp;
+      String keyValue = 'id=$id&nonce=$nonce&otp=$otp';
       if (sl != null) {
-        keyValue = keyValue + '&sl=' + sl;
+        keyValue = '$keyValue&sl=$sl';
       }
       if (timeout != null) {
-        keyValue = keyValue + '&timeout=' + timeout.toString();
+        keyValue = '$keyValue&timeout=$timeout';
       }
       if (timestamp != null) {
-        keyValue = keyValue + '&timestamp=' + timestamp;
+        keyValue = '$keyValue&timestamp=$timestamp';
       }
       final crypto.Hmac hmacSha1 = crypto.Hmac(crypto.sha1, apiKeyDecode64);
       final crypto.Digest sha1Result = hmacSha1.convert(keyValue.codeUnits);
@@ -52,10 +52,8 @@ class YubicoService {
       final String hEncode64 = base64.encode(sha1Result.bytes);
 
       final http.Response responseHttp = await http.get(
-        Uri.parse('https://api.yubico.com/wsapi/2.0/verify?' +
-            keyValue +
-            '&h=' +
-            hEncode64),
+        Uri.parse(
+            'https://api.yubico.com/wsapi/2.0/verify?$keyValue&h=$hEncode64'),
       );
       bool nonceOk = false;
       bool otpOk = false;
@@ -63,8 +61,7 @@ class YubicoService {
       String h = '';
       if (responseHttp.statusCode == 200) {
         final Uri uri = Uri.parse(Uri.encodeFull(
-            'https://api.yubico.com/wsapi/2.0/verify?' +
-                responseHttp.body.replaceAll('\n', '&').replaceAll('\r', '')));
+            'https://api.yubico.com/wsapi/2.0/verify?${responseHttp.body.replaceAll('\n', '&').replaceAll('\r', '')}'));
         // ignore: prefer_final_locals
         List<String> responseParams = List<String>.empty(growable: true);
         uri.queryParameters.forEach((String k, String v) {
@@ -98,7 +95,7 @@ class YubicoService {
           if (k == 'sl') {
             verificationResponse.sl = int.tryParse(v.trim());
           }
-          responseParams.add(k + '=' + v);
+          responseParams.add('$k=$v');
         });
         responseParams
             .sort((String a, String b) => a.toString().compareTo(b.toString()));
@@ -110,7 +107,7 @@ class YubicoService {
               keyValue = element;
               first = false;
             } else {
-              keyValue = keyValue + '&' + element;
+              keyValue = '$keyValue&$element';
             }
           }
         }
@@ -142,7 +139,7 @@ class YubicoService {
     final NdefMessage? cachedMessage = tech!.cachedMessage;
     String otp = '';
     if (cachedMessage != null) {
-      for (int i in Iterable.generate(cachedMessage.records.length)) {
+      for (int i in Iterable<int>.generate(cachedMessage.records.length)) {
         final NdefRecord record = cachedMessage.records[i];
         final Record _record = Record.fromNdef(record);
         if (_record is WellknownUriRecord) {

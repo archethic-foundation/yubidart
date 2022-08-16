@@ -1,46 +1,26 @@
-# Specify analysis options.
+# This file configures the analyzer, which statically analyzes Dart code to
+# check for errors, warnings, and lints.
 #
-# Until there are meta linter rules, each desired lint must be explicitly enabled.
-# See: https://github.com/dart-lang/linter/issues/288
-#
-# For a list of lints, see: http://dart-lang.github.io/linter/lints/
-# See the configuration guide for more
-# https://github.com/dart-lang/sdk/tree/master/pkg/analyzer#configuring-the-analyzer
-#
-# There are other similar analysis options files in the flutter repos,
-# which should be kept in sync with this file:
-#
-#   - analysis_options.yaml (this file)
-#   - packages/flutter/lib/analysis_options_user.yaml
-#   - https://github.com/flutter/plugins/blob/master/analysis_options.yaml
-#   - https://github.com/flutter/engine/blob/master/analysis_options.yaml
-#
-# This file contains the analysis options used by Flutter tools, such as IntelliJ,
-# Android Studio, and the `flutter analyze` command.
+# The issues identified by the analyzer are surfaced in the UI of Dart-enabled
+# IDEs (https://dart.dev/tools#ides-and-editors). The analyzer can also be
+# invoked from the command line by running `flutter analyze`.
 
-analyzer:
-
-  strong-mode:
-    implicit-dynamic: true
-  errors:
-    # treat missing required parameters as a warning (not a hint)
-    missing_required_param: warning
-    # treat missing returns as a warning (not a hint)
-    missing_return: warning
-    # allow having TODOs in the code
-    todo: ignore
-    # Ignore analyzer hints for updating pubspecs when using Future or
-    # Stream and not importing dart:async
-    # Please see https://github.com/flutter/flutter/pull/24528 for details.
-    sdk_version_async_exported_from_core: ignore
-  exclude:
-    - "bin/cache/**"
-    # the following two are relative to the stocks example and the flutter package respectively
-    # see https://github.com/dart-lang/sdk/issues/28463
-    - "lib/i18n/messages_*.dart"
-    - "lib/src/http/**"
+# The following line activates a set of recommended lints for Flutter apps,
+# packages, and plugins designed to encourage good coding practices.
+include: package:flutter_lints/flutter.yaml
 
 linter:
+  # The lint rules applied to this project can be customized in the
+  # section below to disable rules from the `package:flutter_lints/flutter.yaml`
+  # included above or to enable additional rules. A list of all available lints
+  # and their documentation is published at
+  # https://dart-lang.github.io/linter/lints/index.html.
+  #
+  # Instead of disabling a lint rule for the entire project in the
+  # section below, it can also be suppressed for a single line of code
+  # or a specific dart file by using the `// ignore: name_of_lint` and
+  # `// ignore_for_file: name_of_lint` syntax on the line or in the file
+  # producing the lint.
   rules:
     # these rules are documented on and in the same order as
     # the Dart Lint rules page to make maintenance easier
@@ -160,7 +140,6 @@ linter:
     - recursive_getters
     - slash_for_doc_comments
     # - sort_child_properties_last # not yet tested
-    - sort_constructors_first
     - sort_pub_dependencies
     - sort_unnamed_constructors_first
     - test_types_in_equals
@@ -190,3 +169,6 @@ linter:
     # - use_to_and_as_if_applicable # has false positives, so we prefer to catch this by code-review
     - valid_regexps
     # - void_checks # not yet tested
+
+# Additional information about this file can be found at
+# https://dart.dev/guides/language/analysis-options
