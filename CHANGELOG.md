@@ -1,6 +1,13 @@
 Changelog
 =========
 
+#### Version 2.0.0-dev.1 (2023-XX-XX)
+* Add PIV protocol
+* BREAKING CHANGES :
+  * `YubicoService().verifyYubiCloudOTP(otp, yubikeyClientAPIKey, yubikeyClientID);` becomes `Yubidart().otp.verify(otp, yubikeyClientAPIKey, yubikeyClientID);`
+* TODO :
+  * separate connection/authentication/processing actions
+
 #### Version 1.0.4 (2022-08-16)
 * h param is not good when we receive a '+'
 * Update project (dependencies, lints, dart version)
