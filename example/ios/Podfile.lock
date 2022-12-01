@@ -1,0 +1,39 @@
+PODS:
+  - ASN1Decoder (1.8.0)
+  - Flutter (1.0.0)
+  - nfc_manager (0.0.1):
+    - Flutter
+  - yubidart (0.0.1):
+    - ASN1Decoder
+    - Flutter
+    - YubiKit (~> 4.2.0)
+  - YubiKit (4.2.0)
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - nfc_manager (from `.symlinks/plugins/nfc_manager/ios`)
+  - yubidart (from `.symlinks/plugins/yubidart/ios`)
+
+SPEC REPOS:
+  trunk:
+    - ASN1Decoder
+    - YubiKit
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  nfc_manager:
+    :path: ".symlinks/plugins/nfc_manager/ios"
+  yubidart:
+    :path: ".symlinks/plugins/yubidart/ios"
+
+SPEC CHECKSUMS:
+  ASN1Decoder: 6110fdeacfdb41559b1481457a1645be716610aa
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  nfc_manager: d7da7cb781f7744b94df5fe9dbca904ac4a0939e
+  yubidart: 0393c4728755f4e281dd0adb82e2f2b0168e2d57
+  YubiKit: bde189dbaddc29e41dbda9e2c55ec5a79d38c654
+
+PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3
+
+COCOAPODS: 1.11.3
