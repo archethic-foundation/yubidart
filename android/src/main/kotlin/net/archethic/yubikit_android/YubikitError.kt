@@ -26,7 +26,6 @@ fun guard( result: Result, task: () -> Unit) {
     try {
         task()
     } catch (e: Exception) {
-        Log.d("GUARD", "exception", e)
         val error = when (e) {
             is InvalidPinException ->
                 YubikitError.invalidPin
