@@ -17,10 +17,13 @@ abstract class PivProtocol {
   /// This method is thread safe and can be invoked from any thread (main or a background thread).
   ///
   /// [pin] The pin. Default pin code is 123456.
+  /// [managementKey] The management key. Default is 010203040506070801020304050607080102030405060708.
   /// [slot] The slot to generate the new key in.
   /// [type] Which algorithm is used for key generation.
   /// [pinPolicy] The PIN policy for using the private key.
   /// [touchPolicy] The touch policy for using the private key.
+  ///
+  /// Returns the public key of the generated key pair
   ///
   /// Throws a [YKFailure]
   Future<Uint8List> generateKey({
@@ -37,6 +40,8 @@ abstract class PivProtocol {
   /// [pin] The pin. Default pin code is 123456.
   /// [slot] : The slot where the certificate is stored.
   ///
+  /// Returns certificate instance
+  ///
   /// Throws a [YKFailure]
   Future<Uint8List> getCertificate({
     required String pin,
@@ -48,6 +53,8 @@ abstract class PivProtocol {
   /// [pin] The pin. Default pin code is 123456.
   /// [slot] The slot containing the private EC key to use.
   /// [peerPublicKey] The peer public key for the operation. This is an EllipticCurve encryption public key in PEM format.
+  ///
+  /// Returns the shared secret, comprising the x-coordinate of the ECDH result point.
   ///
   /// Throws a [YKFailure]
   Future<Uint8List> calculateSecret({
