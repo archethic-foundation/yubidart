@@ -1,8 +1,8 @@
 name: yubidart
 description: Yubico Services for Dart and Flutter.
-homepage: https://github.com/reddwarf03/yubidart
+homepage: https://github.com/archethic-foundation/yubidart
 
-version: 2.0.0-dev.1
+version: 2.0.0-dev.2
 
 environment:
   sdk: '>=2.18.4 <3.0.0'

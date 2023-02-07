@@ -1,4 +1,4 @@
-[![CI](https://github.com/reddwarf03/yubidart/actions/workflows/ci.yaml/badge.svg)](https://github.com/reddwarf03/yubidart/actions/workflows/ci.yaml) [![Pub](https://img.shields.io/pub/v/yubidart.svg)](https://pub.dartlang.org/packages/yubidart) [![Platform](https://img.shields.io/badge/Platform-Flutter-02569B?logo=flutter)](https://flutter.dev) [![CodeFactor](https://www.codefactor.io/repository/github/reddwarf03/yubidart/badge)](https://www.codefactor.io/repository/github/reddwarf03/yubidart)
+[![CI](https://github.com/archethic-foundation/yubidart/actions/workflows/ci.yaml/badge.svg)](https://github.com/archethic-foundation/yubidart/actions/workflows/ci.yaml) [![Pub](https://img.shields.io/pub/v/yubidart.svg)](https://pub.dartlang.org/packages/yubidart) [![Platform](https://img.shields.io/badge/Platform-Flutter-02569B?logo=flutter)](https://flutter.dev) [![CodeFactor](https://www.codefactor.io/repository/github/archethic-foundation/yubidart/badge)](https://www.codefactor.io/repository/github/archethic-foundation/yubidart)
 
 # yubidart
 
