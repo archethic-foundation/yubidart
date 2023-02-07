@@ -35,7 +35,6 @@ class DefaultPivProtocol implements PivProtocol {
               'touchPolicy': touchPolicy.value,
             },
           );
-          log('result : ${json.encode(result)}');
           if (result == null) {
             throw YKFailure.other();
           }
@@ -81,7 +80,6 @@ class DefaultPivProtocol implements PivProtocol {
         ),
       },
     );
-    log('result : ${json.encode(result)}');
     if (result == null) {
       throw YKFailure.other();
     }

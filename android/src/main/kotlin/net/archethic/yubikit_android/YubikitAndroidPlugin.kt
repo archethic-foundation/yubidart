@@ -51,8 +51,6 @@ class YubikitAndroidPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 result.success(adapter != null && adapter.isEnabled());
             }
             "pivCalculateSecret" -> {
-                Log.d("PIV Calculate secret", "begin")
-
                 val arguments = call.arguments as? HashMap<String, Any>
                 val pin = arguments?.get("pin") as? String
                 val slot = when (val rawSlot = arguments?.get("slot") as? Int) {
@@ -76,15 +74,12 @@ class YubikitAndroidPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                     return
                 }
 
-                Log.d("PIV Calculate secret", "arguments parsed")
                 yubikitManager.startNfcDiscovery(NfcConfiguration(), activity) { device ->
                     device.requestConnection(SmartCardConnection::class.java) { connectionResult ->
                         guard(result) {
-                            Log.d("PIV Calculate secret", "device discovered")
 
                             val connection = connectionResult.getValue()
                             val piv = PivSession(connection)
-                            Log.d("PIV Calculate secret", "piv session ok")
 
                             if (pin != null) {
                                 piv.verifyPin(
@@ -93,7 +88,6 @@ class YubikitAndroidPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                             }
 
                             val secret = piv.calculateSecret(slot, peerPublicKey)
-                            Log.d("PIV Calculate secret", "secret calculated : $secret")
 
                             result.success(secret)
                         }
@@ -101,8 +95,6 @@ class YubikitAndroidPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 }
             }
             "pivGenerateKey" -> {
-                Log.d("AUTHENT START", "GO")
-
                 val arguments = call.arguments as? HashMap<String, Any>
                 val pin = arguments?.get("pin") as? String
                 val managementKey = arguments?.get("managementKey") as? ByteArray
@@ -138,14 +130,11 @@ class YubikitAndroidPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                     return
                 }
 
-                Log.d("AUTHENTICATE", "BEFORE")
-
                 yubikitManager.startNfcDiscovery(NfcConfiguration(), activity) { device ->
                     device.requestConnection(SmartCardConnection::class.java) { connectionResult ->
                         guard(result) {
                             val connection = connectionResult.getValue()
                             val piv = PivSession(connection)
-                            Log.d("AUTHENTICATE", "GO")
                             piv.authenticate(
                                 managementKeyType,
                                 managementKey,
@@ -160,14 +149,12 @@ class YubikitAndroidPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                                 touchPolicy,
                             )
 
-                            Log.d("AUTHENTICATE", "DONE")
                             result.success(publicKey.encoded)
                         }
                     }
                 }
             }
             "pivGetCertificate" -> {
-                Log.d("PIV Get Certificate", "Start")
 
                 val arguments = call.arguments as? HashMap<String, Any>
                 val pin = arguments?.get("pin") as? String
@@ -186,20 +173,15 @@ class YubikitAndroidPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                     return
                 }
 
-                Log.d("PIV Get Certificate", "Params parsed")
-
                 yubikitManager.startNfcDiscovery(NfcConfiguration(), activity) { device ->
                     device.requestConnection(SmartCardConnection::class.java) { connectionResult ->
                         guard(result) {
                             val connection = connectionResult.getValue()
                             val piv = PivSession(connection)
-                            Log.d("PIV Get Certificate", "GO")
                             piv.verifyPin(
                                 pin.toCharArray()
                             )
-                            Log.d("PIV Get Certificate", "Authentication OK")
                             val certificate = piv.getCertificate(slot)
-                            Log.d("PIV Get Certificate", "DONE")
                             result.success(certificate.encoded)
                         }
                     }
