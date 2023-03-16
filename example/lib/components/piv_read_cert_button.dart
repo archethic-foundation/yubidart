@@ -14,11 +14,13 @@ class PivReadCertButton extends StatelessWidget {
   Widget build(BuildContext context) => ActionButton(
         text: 'Read certificate',
         onPressed: () async {
-          final certificate = await yubikitPlugin.piv.getCertificate(
-            pin: "123456",
+          final connection = await yubikitPlugin.connection.connect();
+          final piv = await connection.pivSession;
+          await piv.verifyPin("123456");
+          final publicKey = await piv.getCertificate(
             slot: PivSlot.signature,
           );
-          return String.fromCharCodes(certificate);
+          return String.fromCharCodes(publicKey);
         },
       );
 }

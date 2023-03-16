@@ -6,6 +6,16 @@ import 'package:yubidart/src/domain/model/piv/slot.dart';
 import 'package:yubidart/src/domain/model/piv/touch_policy.dart';
 
 abstract class PivProtocol {
+  /// Verifies the PIN code.
+  ///
+  /// [pin] The pin. Default pin code is 123456.
+  Future<PivProtocol> verifyPin(String pin);
+
+  /// Authenticates with the management key
+  ///
+  /// [managementKey] The management key. Default value is 000102030405060708090A0B0C0D0E0F1011121314151617.
+  Future<PivProtocol> authenticate(PivManagementKey managementKey);
+
   /// Generates a new key pair within the YubiKey.
   /// This method requires authentication and pin verification.
   ///
@@ -16,8 +26,6 @@ abstract class PivProtocol {
   /// TouchPolicy.CACHED requires support for touch cached, available on YubiKey 4.3 or later.
   /// This method is thread safe and can be invoked from any thread (main or a background thread).
   ///
-  /// [pin] The pin. Default pin code is 123456.
-  /// [managementKey] The management key. Default is 010203040506070801020304050607080102030405060708.
   /// [slot] The slot to generate the new key in.
   /// [type] Which algorithm is used for key generation.
   /// [pinPolicy] The PIN policy for using the private key.
@@ -27,8 +35,6 @@ abstract class PivProtocol {
   ///
   /// Throws a YKFailure
   Future<Uint8List> generateKey({
-    required String pin,
-    required PivManagementKey managementKey,
     required PivSlot slot,
     required PivKeyType type,
     required PivPinPolicy pinPolicy,
@@ -37,20 +43,17 @@ abstract class PivProtocol {
 
   /// Reads the X.509 certificate stored in the specified slot on the YubiKey.
   ///
-  /// [pin] The pin. Default pin code is 123456.
   /// [slot] : The slot where the certificate is stored.
   ///
   /// Returns certificate instance
   ///
   /// Throws a YKFailure
   Future<Uint8List> getCertificate({
-    required String pin,
     required PivSlot slot,
   });
 
   /// Perform an ECDH operation with a given public key to compute a shared secret.
   ///
-  /// [pin] The pin. Default pin code is 123456.
   /// [slot] The slot containing the private EC key to use.
   /// [peerPublicKey] The peer public key for the operation. This is an EllipticCurve encryption public key in PEM format.
   ///
@@ -58,7 +61,6 @@ abstract class PivProtocol {
   ///
   /// Throws a YKFailure
   Future<Uint8List> calculateSecret({
-    required String pin,
     required PivSlot slot,
     required String peerPublicKey,
   });

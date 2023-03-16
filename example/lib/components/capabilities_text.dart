@@ -24,7 +24,7 @@ class CapabilitiesText extends StatelessWidget {
 
   Future<String> capabilitiesString() async {
     try {
-      final capabilities = await yubikitPlugin.general.deviceCapabilities;
+      final capabilities = await yubikitPlugin.connection.deviceCapabilities;
       return 'nfc : ${capabilities.nfc}, wired : ${capabilities.wired}';
     } on PlatformException {
       return 'Failed to get device capabilities';
