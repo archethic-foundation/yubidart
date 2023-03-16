@@ -14,12 +14,20 @@ class GenerateKeyButton extends StatelessWidget {
   Widget build(BuildContext context) => ActionButton(
         text: 'Generate key',
         onPressed: () async {
-          final publicKey = await yubikitPlugin.piv.generateKey(
-            pin: "123456",
-            managementKey: PivManagementKey.fromString(
+          final connection = await yubikitPlugin.connection.connect(
+            timeout: const Duration(seconds: 15),
+          );
+          final piv = await connection.pivSession;
+
+          await piv.verifyPin("123456");
+          await piv.authenticate(
+            PivManagementKey.fromString(
               "010203040506070801020304050607080102030405060708",
               keyType: PivManagementKeyType.tripleDES,
             ),
+          );
+
+          final publicKey = await piv.generateKey(
             pinPolicy: PivPinPolicy.defaultPolicy,
             type: PivKeyType.eccp256,
             touchPolicy: PivTouchPolicy.defaultPolicy,

@@ -14,8 +14,6 @@ class DefaultPivProtocol implements PivProtocol {
 
   @override
   Future<Uint8List> generateKey({
-    required String pin,
-    required PivManagementKey managementKey,
     required PivSlot slot,
     required PivKeyType type,
     required PivPinPolicy pinPolicy,
@@ -26,9 +24,6 @@ class DefaultPivProtocol implements PivProtocol {
           final result = await methodChannel.invokeMethod<Uint8List>(
             'pivGenerateKey',
             <String, dynamic>{
-              'pin': pin,
-              'managementKey': managementKey.key,
-              'managementKeyType': managementKey.keyType.value,
               'slot': slot.value,
               'type': type.value,
               'pinPolicy': pinPolicy.value,
@@ -45,7 +40,6 @@ class DefaultPivProtocol implements PivProtocol {
 
   @override
   Future<Uint8List> getCertificate({
-    required String pin,
     required PivSlot slot,
   }) =>
       YKFailure.guard(
@@ -53,7 +47,6 @@ class DefaultPivProtocol implements PivProtocol {
           final result = await methodChannel.invokeMethod<Uint8List>(
             'pivGetCertificate',
             <String, dynamic>{
-              'pin': pin,
               'slot': slot.value,
             },
           );
@@ -68,14 +61,12 @@ class DefaultPivProtocol implements PivProtocol {
   @override
   Future<Uint8List> calculateSecret({
     required PivSlot slot,
-    required String pin,
     required String peerPublicKey,
   }) async {
     final result = await methodChannel.invokeMethod<Uint8List>(
       'pivCalculateSecret',
       <String, dynamic>{
         'slot': slot.value,
-        'pin': pin,
         'peerPublicKey': Uint8List.fromList(
           PemCodec(PemLabel.publicKey).decode(peerPublicKey),
         ),
@@ -86,5 +77,34 @@ class DefaultPivProtocol implements PivProtocol {
       throw YKFailure.other();
     }
     return result;
+  }
+
+  @override
+  Future<PivProtocol> authenticate(PivManagementKey managementKey) async {
+    final result = await methodChannel.invokeMethod<Uint8List>(
+      'pivAuthenticate',
+      <String, dynamic>{
+        'managementKey': managementKey.key,
+        'managementKeyType': managementKey.keyType.value,
+      },
+    );
+    if (result == null) {
+      throw YKFailure.other();
+    }
+    return this;
+  }
+
+  @override
+  Future<PivProtocol> verifyPin(String pin) async {
+    final result = await methodChannel.invokeMethod<Uint8List>(
+      'pivVerifyPin',
+      <String, dynamic>{
+        'pin': pin,
+      },
+    );
+    if (result == null) {
+      throw YKFailure.other();
+    }
+    return this;
   }
 }
