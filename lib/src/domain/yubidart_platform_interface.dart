@@ -12,7 +12,7 @@ abstract class YubidartPlatform extends PlatformInterface {
 
   /// The default instance of [YubidartPlatform] to use.
   ///
-  /// Defaults to [MethodChannelYubidart].
+  /// Defaults to MethodChannelYubidart.
   static YubidartPlatform get instance => _instance;
 
   PivProtocol get piv;

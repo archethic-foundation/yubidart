@@ -2,42 +2,42 @@ name: yubidart
 description: Yubico Services for Dart and Flutter.
 homepage: https://github.com/archethic-foundation/yubidart
 
-version: 2.0.0-dev.2
+version: 2.0.1
 
 environment:
-  sdk: '>=2.18.4 <3.0.0'
-  flutter: ">=3.0.0"
+  sdk: ">=3.1.0 <4.0.0"
+  flutter: ">=3.13.0"
 
 dependencies:
-
   # Implementations of SHA, MD5, and HMAC cryptographic functions
-  crypto: ^3.0.2
-  cryptography: ^2.0.5
+  crypto: ^3.0.3
+
+  # Cryptographic algorithms for encryption, digital signatures, key agreement, authentication, and hashing. AES, Chacha20, ED25519, X25519, and more. Good cross-platform support.
+  cryptography: ^2.5.0
 
   flutter:
     sdk: flutter
 
   # A composable, multi-platform, Future-based API for HTTP requests
-  http: ^0.13.5
+  http: ^1.0.0
 
   # Flutter plugin for accessing the NFC features on Android and iOS.
-  nfc_manager: ^3.1.1
+  nfc_manager: ^3.3.0
 
   # Nonce contains a static generator that generates random alphanumeric strings, and can be constructed as an object containing a generated string
   nonce: ^1.2.0
 
-  pem: ^2.0.1
+  # PEM encoding/decoding of textual keys following RFC 7468, supporting both lax/strict-mode, and certificates chains of concatenated PEM blocks
+  pem: ^2.0.4
 
-  plugin_platform_interface: ^2.0.2
-  # pointycastle: ^3.6.2
+  # Reusable base class for platform interfaces of Flutter federated plugins, to help enforce best practices.
+  plugin_platform_interface: ^2.1.5
 
 dev_dependencies:
-  flutter_lints: ^2.0.1
+  flutter_lints: ^2.0.2
   flutter_test:
     sdk: flutter
-  # Automatically organize your dart imports
-  import_sorter: ^4.6.0
-  test: ^1.21.4
+  test: ^1.24.3
 
 flutter:
   plugin:

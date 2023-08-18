@@ -22,7 +22,7 @@ class YubicloudClient {
       /// A 16 to 40 character long string with random unique data
       final nonce = Nonce.generate(Random().nextInt(25) + 16);
 
-      String keyValue = 'id=$id&nonce=$nonce&otp=$otp';
+      var keyValue = 'id=$id&nonce=$nonce&otp=$otp';
       if (sl != null) {
         keyValue = '$keyValue&sl=$sl';
       }
@@ -32,23 +32,27 @@ class YubicloudClient {
       if (timestamp != null) {
         keyValue = '$keyValue&timestamp=$timestamp';
       }
-      final crypto.Hmac hmacSha1 = crypto.Hmac(crypto.sha1, apiKeyDecode64);
-      final crypto.Digest sha1Result = hmacSha1.convert(keyValue.codeUnits);
+      final hmacSha1 = crypto.Hmac(crypto.sha1, apiKeyDecode64);
+      final sha1Result = hmacSha1.convert(keyValue.codeUnits);
 
       /// The optional HMAC-SHA1 signature for the request.
       final hEncode64 = base64.encode(sha1Result.bytes);
 
-      final http.Response responseHttp = await http.get(
+      final responseHttp = await http.get(
         Uri.parse(
-            'https://api.yubico.com/wsapi/2.0/verify?$keyValue&h=$hEncode64'),
+          'https://api.yubico.com/wsapi/2.0/verify?$keyValue&h=$hEncode64',
+        ),
       );
-      bool nonceOk = false;
-      bool otpOk = false;
-      bool hOk = false;
-      String h = '';
+      var nonceOk = false;
+      var otpOk = false;
+      var hOk = false;
+      var h = '';
       if (responseHttp.statusCode == 200) {
-        final uri = Uri.parse(Uri.encodeFull(
-            'https://api.yubico.com/wsapi/2.0/verify?${responseHttp.body.replaceAll('\n', '&').replaceAll('\r', '')}'));
+        final uri = Uri.parse(
+          Uri.encodeFull(
+            'https://api.yubico.com/wsapi/2.0/verify?${responseHttp.body.replaceAll('\n', '&').replaceAll('\r', '')}',
+          ),
+        );
         final responseParams = List<String>.empty(growable: true);
         uri.queryParameters.forEach((String k, String v) {
           if (k == 'status') {
@@ -83,10 +87,9 @@ class YubicloudClient {
           }
           responseParams.add('$k=$v');
         });
-        responseParams
-            .sort((String a, String b) => a.toString().compareTo(b.toString()));
-        bool first = true;
-        for (String element in responseParams) {
+        responseParams.sort((String a, String b) => a.compareTo(b));
+        var first = true;
+        for (final element in responseParams) {
           element.replaceAll('\r\n', '');
           if (element.startsWith('h=') == false) {
             if (first) {
@@ -99,8 +102,7 @@ class YubicloudClient {
         }
 
         if (verificationResponse.status == 'OK') {
-          final crypto.Digest responseSha1Result =
-              hmacSha1.convert(keyValue.codeUnits);
+          final responseSha1Result = hmacSha1.convert(keyValue.codeUnits);
           final responseHEncode64 = base64.encode(responseSha1Result.bytes);
           if (responseHEncode64 == h) {
             hOk = true;

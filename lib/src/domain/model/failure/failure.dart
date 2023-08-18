@@ -7,20 +7,6 @@ import 'package:yubidart/src/domain/model/failure/failure_ext.dart';
 abstract class YKFailure implements Exception {
   const YKFailure();
 
-  static Future<T> guard<T>(FutureOr<T> Function() run) async {
-    try {
-      return await run();
-    } on PlatformException catch (e, stack) {
-      log(
-        'An error occured',
-        name: 'Yubidart',
-        error: e,
-        stackTrace: stack,
-      );
-      throw e.toYKFailure();
-    }
-  }
-
   factory YKFailure.invalidPIVManagementKey({
     String? message,
   }) = InvalidPIVManagementKey;
@@ -45,13 +31,27 @@ abstract class YKFailure implements Exception {
   factory YKFailure.invalidData() = InvalidData;
 
   factory YKFailure.other() = OtherFailure;
+
+  static Future<T> guard<T>(FutureOr<T> Function() run) async {
+    try {
+      return await run();
+    } on PlatformException catch (e, stack) {
+      log(
+        'An error occured',
+        name: 'Yubidart',
+        error: e,
+        stackTrace: stack,
+      );
+      throw e.toYKFailure();
+    }
+  }
 }
 
 class InvalidPIVManagementKey extends YKFailure {
-  final String? message;
   const InvalidPIVManagementKey({
     this.message,
   });
+  final String? message;
 }
 
 class SecurityConditionNotSatisfied extends YKFailure {
@@ -59,11 +59,10 @@ class SecurityConditionNotSatisfied extends YKFailure {
 }
 
 class InvalidPin extends YKFailure {
-  final int remainingRetries;
-
   const InvalidPin({
     required this.remainingRetries,
   });
+  final int remainingRetries;
 }
 
 class AuthMethodBlocked extends YKFailure {
@@ -75,11 +74,10 @@ class DeviceError extends YKFailure {
 }
 
 class UnsupportedOperation extends YKFailure {
-  final String? message;
-
   const UnsupportedOperation({
     this.message,
   });
+  final String? message;
 }
 
 class NotConnectedFailure extends YKFailure {

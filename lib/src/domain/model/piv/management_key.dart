@@ -4,9 +4,6 @@ import 'package:yubidart/src/domain/model/failure/failure.dart';
 import 'package:yubidart/src/domain/model/piv/management_key_type.dart';
 
 class PivManagementKey {
-  final Uint8List key;
-  final PivManagementKeyType keyType;
-
   const PivManagementKey({
     required this.key,
     required this.keyType,
@@ -22,7 +19,7 @@ class PivManagementKey {
       );
     }
 
-    if (key.contains(RegExp(r'[^a-fA-F0-9]'))) {
+    if (key.contains(RegExp('[^a-fA-F0-9]'))) {
       throw YKFailure.invalidPIVManagementKey(
         message: 'Key should contain hexadecimal characters only',
       );
@@ -41,4 +38,6 @@ class PivManagementKey {
       keyType: keyType,
     );
   }
+  final Uint8List key;
+  final PivManagementKeyType keyType;
 }
