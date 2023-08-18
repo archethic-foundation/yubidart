@@ -1,7 +1,7 @@
 Changelog
 =========
 
-#### Version 2.0.1
+#### Version 2.0.0
 * Update dependencies and lints rules
 
 #### Version 2.0.0-dev.1
