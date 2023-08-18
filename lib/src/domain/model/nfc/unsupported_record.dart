@@ -8,6 +8,7 @@ class UnsupportedRecord implements Record {
 
   final NdefRecord record;
 
+  // ignore: prefer_constructors_over_static_methods
   static UnsupportedRecord fromNdef(NdefRecord record) {
     return UnsupportedRecord(record);
   }

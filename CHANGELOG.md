@@ -1,7 +1,10 @@
 Changelog
 =========
 
-#### Version 2.0.0-dev.1 (2023-XX-XX)
+#### Version 2.0.1
+* Update dependencies and lints rules
+
+#### Version 2.0.0-dev.1
 * Add PIV protocol
 * BREAKING CHANGES :
   * `YubicoService().verifyYubiCloudOTP(otp, yubikeyClientAPIKey, yubikeyClientID);` becomes `Yubidart().otp.verify(otp, yubikeyClientAPIKey, yubikeyClientID);`

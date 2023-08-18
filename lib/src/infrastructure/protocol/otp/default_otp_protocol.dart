@@ -6,20 +6,19 @@ import 'package:yubidart/src/domain/protocol/otp/otp.dart';
 import 'package:yubidart/src/infrastructure/protocol/otp/yubicloud_client.dart';
 
 class DefaultOTPProtocol implements OTPProtocol {
-  final YubicloudClient yubicloudClient;
-
   const DefaultOTPProtocol({
     required this.yubicloudClient,
   });
+  final YubicloudClient yubicloudClient;
 
   @override
   String getOTPFromYubiKeyNFC(NfcTag tag) {
-    final Ndef? tech = Ndef.from(tag);
-    final NdefMessage? cachedMessage = tech!.cachedMessage;
-    String otp = '';
+    final tech = Ndef.from(tag);
+    final cachedMessage = tech!.cachedMessage;
+    var otp = '';
     if (cachedMessage != null) {
-      for (int i in Iterable<int>.generate(cachedMessage.records.length)) {
-        final NdefRecord ndefRecord = cachedMessage.records[i];
+      for (final i in Iterable<int>.generate(cachedMessage.records.length)) {
+        final ndefRecord = cachedMessage.records[i];
         final record = Record.fromNdef(ndefRecord);
         if (record is WellknownUriRecord) {
           otp = '${record.uri}';
@@ -39,8 +38,8 @@ class DefaultOTPProtocol implements OTPProtocol {
     String? sl,
     String? timestamp,
   }) async {
-    OTPVerificationResponse verificationResponse = OTPVerificationResponse();
-    final String otp = getOTPFromYubiKeyNFC(tag);
+    var verificationResponse = OTPVerificationResponse();
+    final otp = getOTPFromYubiKeyNFC(tag);
     if (otp.isNotEmpty) {
       verificationResponse = await verify(
         otp,

@@ -14,9 +14,10 @@ class WellknownUriRecord implements Record {
 
   final Uri uri;
 
+  // ignore: prefer_constructors_over_static_methods
   static WellknownUriRecord fromNdef(NdefRecord record) {
-    final String prefix = NdefRecord.URI_PREFIX_LIST[record.payload.first];
-    final Uint8List bodyBytes = record.payload.sublist(1);
+    final prefix = NdefRecord.URI_PREFIX_LIST[record.payload.first];
+    final bodyBytes = record.payload.sublist(1);
     return WellknownUriRecord(
       identifier: record.identifier,
       uri: Uri.parse(prefix + utf8.decode(bodyBytes)),

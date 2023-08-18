@@ -25,7 +25,7 @@ abstract class PivProtocol {
   ///
   /// Returns the public key of the generated key pair
   ///
-  /// Throws a [YKFailure]
+  /// Throws a YKFailure
   Future<Uint8List> generateKey({
     required String pin,
     required PivManagementKey managementKey,
@@ -42,7 +42,7 @@ abstract class PivProtocol {
   ///
   /// Returns certificate instance
   ///
-  /// Throws a [YKFailure]
+  /// Throws a YKFailure
   Future<Uint8List> getCertificate({
     required String pin,
     required PivSlot slot,
@@ -56,7 +56,7 @@ abstract class PivProtocol {
   ///
   /// Returns the shared secret, comprising the x-coordinate of the ECDH result point.
   ///
-  /// Throws a [YKFailure]
+  /// Throws a YKFailure
   Future<Uint8List> calculateSecret({
     required String pin,
     required PivSlot slot,

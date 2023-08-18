@@ -1,8 +1,8 @@
 import 'package:yubidart/src/domain/protocol/protocol.dart';
 import 'package:yubidart/src/domain/yubidart_platform_interface.dart';
 
-import 'src/infrastructure/protocol/otp/default_otp_protocol.dart';
-import 'src/infrastructure/protocol/otp/yubicloud_client.dart';
+import 'package:yubidart/src/infrastructure/protocol/otp/default_otp_protocol.dart';
+import 'package:yubidart/src/infrastructure/protocol/otp/yubicloud_client.dart';
 
 export 'package:cryptography/dart.dart';
 
