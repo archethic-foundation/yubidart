@@ -56,7 +56,6 @@ class PivCalculateSecretHandler: Handler {
                         
                         return
                     }
-                    
                     pivSession.verifyPin(pin) { retries, verifyPinError in
                         guard verifyPinError == nil else {
                             context.failure(

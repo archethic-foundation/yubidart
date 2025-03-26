@@ -1,6 +1,5 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-import 'package:yubidart/src/domain/protocol/general/protocol.dart';
-import 'package:yubidart/src/domain/protocol/piv/protocol.dart';
+import 'package:yubidart/src/domain/protocol/connection/protocol.dart';
 
 abstract class YubidartPlatform extends PlatformInterface {
   /// Constructs a [YubidartPlatform].
@@ -15,9 +14,7 @@ abstract class YubidartPlatform extends PlatformInterface {
   /// Defaults to MethodChannelYubidart.
   static YubidartPlatform get instance => _instance;
 
-  PivProtocol get piv;
-
-  GeneralProtocol get general;
+  ConnectionProtocol get connection;
 
   /// Platform-specific implementations should set this with their own
   /// platform-specific class that extends [YubidartPlatform] when
@@ -30,8 +27,5 @@ abstract class YubidartPlatform extends PlatformInterface {
 
 class EmptyYubidartPlatformImplementation implements YubidartPlatform {
   @override
-  GeneralProtocol get general => throw UnimplementedError();
-
-  @override
-  PivProtocol get piv => throw UnimplementedError();
+  ConnectionProtocol get connection => throw UnimplementedError();
 }

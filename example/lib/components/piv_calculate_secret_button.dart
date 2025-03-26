@@ -14,9 +14,13 @@ class PivCalculateSecretButton extends StatelessWidget {
   Widget build(BuildContext context) => ActionButton(
         text: 'Calculate secret',
         onPressed: () async {
-          final secret = await yubikitPlugin.piv.calculateSecret(
+          final connection = await yubikitPlugin.connection.connect();
+          final piv = await connection.pivSession;
+
+          piv.verifyPin("123456");
+
+          final secret = await piv.calculateSecret(
             slot: PivSlot.authentication,
-            pin: "123456",
             peerPublicKey: """
 -----BEGIN PUBLIC KEY-----
 MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAElqeFrBCjtonol5ksKYCuXf+alUTI
