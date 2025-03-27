@@ -1,5 +1,7 @@
 Changelog
 =========
+#### Version 2.0.1
+* License MIT
 
 #### Version 2.0.0
 * Update dependencies and lints rules
